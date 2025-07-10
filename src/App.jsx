@@ -19,7 +19,6 @@ function App() {
 
   return (
     <Router>
-      <p>{isAuthenticated ? "si" : "no"}</p>
       {isAuthenticated && <Header />}
       <Routes>
         <Route

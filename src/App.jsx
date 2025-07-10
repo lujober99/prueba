@@ -7,15 +7,19 @@ import PokemonGallery from './Components/Pokemones/PokemonGallery.jsx';
 import PokemonDescription from './Components/Description/Description.jsx';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute.jsx';
 import Register from './Components/Register/Register.jsx';
+import PokemonList from './Components/PokemosList/PokemonList.jsx';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    // Verificar si hay un token en localStorage para mantener sesión activa
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
   }, []);
+
+  if (isAuthenticated === null) {
+    return null; // evita render hasta saber si hay auth
+  }
 
   return (
     <Router>
@@ -33,8 +37,10 @@ function App() {
           path="/home"
           element={
             <PrivateRoute isAuthenticated={isAuthenticated}>
-
-              <PokemonGallery />
+              <>
+                <PokemonList />
+                <PokemonGallery />
+              </>
             </PrivateRoute>
           }
         />
@@ -46,7 +52,6 @@ function App() {
             </PrivateRoute>
           }
         />
-
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

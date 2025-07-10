@@ -43,5 +43,40 @@
     left: 10px;
     margin: 0;
   }
+  .random-button,
+.reset-button {
+  padding: 10px 18px;
+  margin: 10px 10px 20px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para botón de Mezclar */
+.random-button {
+  background-color: #ff4848;
+  color: white;
+}
+
+.random-button:hover {
+  background-color: #e63b3b;
+  transform: scale(1.05);
+}
+
+/* Estilo para botón de Reiniciar */
+.reset-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: #3e8e41;
+  transform: scale(1.05);
+}
+
   
   

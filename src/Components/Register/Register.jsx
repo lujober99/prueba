@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
-
+import Swal from "sweetalert2";
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -38,12 +38,18 @@ const Register = () => {
       // Guarda el usuario y el token
       localStorage.setItem("token", fakeToken);
       localStorage.setItem("user", JSON.stringify(data));
-      window.dispatchEvent(new Event("storage")); // Para que <User /> se actualice
+      
 
-      // Opcional: si Register recibe setIsAuthenticated como prop
-      // setIsAuthenticated(true);
 
-      navigate("/"); // vuelve al login, o cambia a "/home" si quieres autologin
+      Swal.fire({
+        icon: "success",
+        title: "¡Registro exitoso!",
+        text: "Ahora puedes iniciar sesión",
+        confirmButtonText: "Ir al login",
+        confirmButtonColor: "#3085d6",
+      }).then(() => {
+        navigate("/");
+      });
     } else {
       alert("Error al registrarse");
     }

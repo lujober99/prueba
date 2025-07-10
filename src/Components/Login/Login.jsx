@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const Login = ({ setIsAuthenticated }) => {
   const [username, setUsername] = useState("");
@@ -28,10 +29,15 @@ const Login = ({ setIsAuthenticated }) => {
       window.dispatchEvent(new Event("storage")); 
       setIsAuthenticated(true);
       navigate("/home");
-    } else {
-      alert("Login incorrecto");
-    }
+    } else Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Usuario o contraseña incorrectos',
+        confirmButtonColor: '#d33',
+        background: '#fff8f5',
+      });
   };
+  
 
 
 

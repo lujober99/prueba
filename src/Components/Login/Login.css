@@ -52,4 +52,8 @@
   .login-button:hover {
     background-color: #e13f22;
   }
-  
+  alert {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }  

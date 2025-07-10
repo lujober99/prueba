@@ -7,11 +7,13 @@ const Search = ({ searchTerm, onSearch }) => {
     <div className="search-container">
       <input
         type="text"
-        placeholder="Buscar por nombre o tipo..."
+        placeholder="Buscar por nombre"
         value={searchTerm}
         onChange={(e) => onSearch(e.target.value)}
         className="search-input"
       />
+
+      
     </div>
   );
 };

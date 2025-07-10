@@ -1,12 +1,25 @@
-# React + Vite
+Bienvenido a **PokeDex App**, una aplicación web interactiva construida con **React** que permite explorar Pokémon utilizando la [PokeAPI](https://pokeapi.co/) y gestionar usuarios con [DummyJSON](https://dummyjson.com/).
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> 🧪 **Puedes iniciar sesión utilizando las siguientes credenciales de prueba**:
+> - **Usuario**: `michaelw`
+> - **Contraseña**: `michaelwpass`
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Funcionalidades
 
-## Expanding the ESLint configuration
+- 🔐 **Autenticación de usuarios** con login y registro.
+- 📦 **Consulta de más de 1000 Pokémon** desde la PokeAPI.
+- 🧠 **Filtrado por nombre, tipo y generación.**
+- 🔍 **Búsqueda dinámica**.
+- 🌀 **Visualización detallada** de cada Pokémon (habilidades, tipos, imagen, etc.).
+- 💾 **Almacenamiento en localStorage** para acelerar la carga de datos.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Cómo usar
+
+### 1. Clona el repositorio
+```bash
+git clone https://github.com/tu-usuario/pokedex-app.git
+cd pokedex-app

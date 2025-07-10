@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem;
+    background-color: #f0f0f0;
+  }
+  
+  .header img {
+    height: 80px;
+    margin: 0 1rem;
+  }
+  
+  /* Pokebolas alineadas a los lados */
+  .header img:first-child {
+    position: absolute;
+    left: 1rem;
+  }
+  
+  .header img:last-child {
+    position: absolute;
+    right: 1rem;
+  }
+  
+  /* Pokédex centrada */
+  .header img:nth-child(2) {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Panel de usuario */
+  .header .user-card {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  

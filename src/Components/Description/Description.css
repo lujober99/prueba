@@ -1,0 +1,91 @@
+.pokemon-card {
+    max-width: 800px !important;
+    margin: 20px auto;
+    padding: 88px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .pokemon-description h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .img-principal {
+    width: 200px;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
+  
+  .img-principal:hover {
+    transform: scale(1.05);
+  }
+  
+  .container-description {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px 30px;
+    margin-top: 20px;
+    text-align: left;
+    justify-content: center;
+  }
+  
+  .container-description p {
+    margin: 0;
+  }
+  
+  .evolution-chain {
+    display: flex;
+    flex-wrap: row;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .img-evolution {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    height: auto;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    outline: none;
+    z-index: 1000;
+    text-align: center;
+  }
+  
+  .zoom-image {
+    width: 400px;
+    max-width: 90vw;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .back-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .back-button:hover {
+    background-color: #d32f2f;
+  }
+  

@@ -1,0 +1,48 @@
+.user-card {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+  }
+  
+  .user-card h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .user-card p {
+    margin: 6px 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .logout-button {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .logout-button:hover {
+    background-color: #e04343;
+  }
+  
+  .loading {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #888;
+    font-style: italic;
+  }
+  

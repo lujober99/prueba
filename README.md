@@ -27,4 +27,4 @@ npm install
 npm run dev
 ```
 
-## [Link de prueba](https://prueba-git-main-jorge-bermeos-projects.vercel.app/)
+## [Link de prueba](https://prueba-1u81uuf8o-jorge-bermeos-projects.vercel.app/)

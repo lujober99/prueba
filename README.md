@@ -23,3 +23,8 @@ Bienvenido a **PokeDex App**, una aplicación web interactiva construida con **R
 ```bash
 git clone https://github.com/lujober99/prueba.git
 cd pokedex-app
+npm install
+npm run dev
+```
+
+## [Link de prueba](https://prueba-git-main-jorge-bermeos-projects.vercel.app/)

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2';
 

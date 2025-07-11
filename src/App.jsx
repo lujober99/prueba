@@ -39,7 +39,7 @@ function App() {
             <PrivateRoute isAuthenticated={isAuthenticated}>
               <>
                 <PokemonList />
-                <PokemonGallery />
+                
               </>
             </PrivateRoute>
           }

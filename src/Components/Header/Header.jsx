@@ -11,7 +11,7 @@ import Pokebola from "../../assets/pokebola.png";
         <header className="header">
             
             <img className='poke' src={Pokebola} alt="" />
-            <div class="titulo">
+            <div className="titulo">
   <img src={PokeDex} alt="Logo" />
 </div>
             <img className='poke' src={Pokebola} alt="" />

@@ -22,7 +22,7 @@ Bienvenido a **PokeDex App**, una aplicación web interactiva construida con **R
 ### 1. Clona el repositorio
 ```bash
 git clone https://github.com/lujober99/prueba.git
-cd pokedex-app
+cd prueba
 npm install
 npm run dev
 ```

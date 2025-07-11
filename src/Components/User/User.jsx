@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./user.css";
-
+import { LogOut } from 'lucide-react';
 const User = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate(); 
@@ -38,12 +38,14 @@ const User = () => {
   if (!user) return null;
 
   return (
-    <div className="user-card">
-      <h3>{user.firstName} {user.lastName}</h3>
-      <p><strong>Usuario:</strong> {user.username}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Género:</strong> {user.gender}</p>
-      <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
+    <div className="user-info-panel">
+      <div className="user-info">
+        <p className="username">{user.username}</p>
+        <p className="email">{user.email}</p>
+      </div>
+      <button className="logout-button" onClick={handleLogout}>
+        <LogOut size={18} />
+      </button>
     </div>
   );
 };

@@ -1,38 +1,80 @@
 .header {
-    display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1rem;
+  background-color: rgba(255, 0, 0, 0.788);
+}
+
+/* Imágenes generales */
+.header img {
+  height: 80px;
+  margin: 0 1rem;
+}
+
+/* Pokebolas alineadas a los lados */
+.pokebola-left {
+  position: absolute;
+  left: 1rem;
+}
+
+.pokebola-right {
+  position: absolute;
+  right: 1rem;
+}
+
+/* Pokédex centrada */
+.pokedex {
+  position: relative;
+  z-index: 1;
+}
+
+/* Panel de usuario */
+.header .user-card {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* 🟢 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    padding: 1rem;
-    background-color: #f0f0f0;
+    padding: 0.5rem;
   }
-  
-  .header img {
-    height: 80px;
-    margin: 0 1rem;
+
+  .poke {
+    display: none;
   }
-  
-  /* Pokebolas alineadas a los lados */
-  .header img:first-child {
-    position: absolute;
-    left: 1rem;
+
+  .pokedex {
+    height: 60px;
+    margin: 0.5rem 0;
+    order: 0;
   }
-  
-  .header img:last-child {
-    position: absolute;
-    right: 1rem;
-  }
-  
-  /* Pokédex centrada */
-  .header img:nth-child(2) {
-    position: relative;
-    z-index: 1;
-  }
-  
-  /* Panel de usuario */
+
   .header .user-card {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    position: static;
+    margin-top: 0.5rem;
+    order: 2;
   }
-  
+
+  .header img {
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header img {
+    height: 50px;
+  }
+
+  .poke {
+    display: none;
+  }
+  .titulo {
+    text-align: left;
+  }
+}

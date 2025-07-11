@@ -1,9 +1,10 @@
 // src/components/PokemonList.jsx
 import React, { useEffect, useState } from "react";
+import PokemonGallery from "../Pokemones/PokemonGallery.jsx";
 
 const PokemonList = () => {
   const [loading, setLoading] = useState(true);
-
+  const [pokemonData, setPokemonData] = useState([]);
   // 1. Trae la lista de todos los Pokémon (solo nombres y URLs)
   const fetchAllPokemonList = async () => {
     try {
@@ -42,37 +43,56 @@ const PokemonList = () => {
   // 3. Carga los datos y los guarda en localStorage
   useEffect(() => {
     const saveFullPokemonData = async () => {
-      const alreadyStored = localStorage.getItem("fullPokemonData");
-      if (alreadyStored) {
-        console.log("✅ Pokémon ya están guardados en localStorage.");
-        setLoading(false);
-        return;
+      try {
+        const alreadyStored = localStorage.getItem("fullPokemonData");
+        if (alreadyStored) {
+          console.log("✅ Pokémon ya están guardados en localStorage.");
+          setPokemonData(JSON.parse(alreadyStored)); // <- Cargar del localStorage
+          setLoading(false);
+          return;
+        }
+  
+        console.log("🚀 Cargando Pokémon desde la API...");
+        const list = await fetchAllPokemonList();
+  
+        const fullData = await fetchInBatches(list, 20); // Puedes ajustar el batchSize
+  
+        const cleanData = fullData.filter(Boolean);
+  
+        localStorage.setItem("fullPokemonData", JSON.stringify(cleanData));
+        setPokemonData(cleanData);  // <- Actualizar estado con los nuevos datos
+        console.log("✅ Pokémon guardados en localStorage.");
+      } catch (error) {
+        console.error("❌ Error general en la carga de Pokémon:", error);
+      } finally {
+        setLoading(false); // Solo se llama una vez, al final
       }
-
-      console.log("🚀 Cargando Pokémon desde la API...");
-      const list = await fetchAllPokemonList();
-
-      const fullData = await Promise.all(
-        list.map((pokemon) => fetchPokemonDetails(pokemon.url))
-      );
-
-      // Filtra posibles nulos por errores
-      const cleanData = fullData.filter(Boolean);
-
-      localStorage.setItem("fullPokemonData", JSON.stringify(cleanData));
-      console.log("✅ Pokémon guardados en localStorage.");
-      setLoading(false);
     };
-
+  
+    const fetchInBatches = async (urls, batchSize = 20) => {
+      const results = [];
+  
+      for (let i = 0; i < urls.length; i += batchSize) {
+        const batch = urls.slice(i, i + batchSize);
+        const batchResults = await Promise.all(
+          batch.map((pokemon) => fetchPokemonDetails(pokemon.url))
+        );
+        results.push(...batchResults);
+      }
+  
+      return results;
+    };
+  
     saveFullPokemonData();
   }, []);
+  
 
   return (
     <div style={{ textAlign: "center", marginTop: "2rem" }}>
       {loading ? (
         <p>⏳ Cargando Pokémon...</p>
       ) : (
-        <p></p>
+        <PokemonGallery pokemonData={pokemonData} />
       )}
     </div>
   );

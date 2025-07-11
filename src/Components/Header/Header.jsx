@@ -10,9 +10,11 @@ import Pokebola from "../../assets/pokebola.png";
     return (
         <header className="header">
             
-            <img src={Pokebola} alt="" />
-            <img src={PokeDex} alt="Poko Dex" />
-            <img src={Pokebola} alt="" />
+            <img className='poke' src={Pokebola} alt="" />
+            <div class="titulo">
+  <img src={PokeDex} alt="Logo" />
+</div>
+            <img className='poke' src={Pokebola} alt="" />
 
             <User></User>
         </header>

@@ -13,6 +13,7 @@ const PokemonGallery = () => {
   const [selectedName, setSelectedName] = useState("");
 const [selectedType, setSelectedType] = useState("");
 const [selectedGeneration, setSelectedGeneration] = useState("");
+const [sortOption, setSortOption] = useState("");
 
 
 const uniqueTypes = [...new Set(pokemons.flatMap(p => p.types))];
@@ -58,6 +59,31 @@ useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  useEffect(() => {
+    let result = [...pokemons];
+  
+    if (selectedType) {
+      result = result.filter(p => p.types.includes(selectedType));
+    }
+  
+    if (selectedGeneration) {
+      result = result.filter(p => p.generation === selectedGeneration);
+    }
+  
+    // Ordenamiento
+    if (sortOption === "name-asc") {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === "name-desc") {
+      result.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortOption === "id-asc") {
+      result.sort((a, b) => a.id - b.id);
+    } else if (sortOption === "id-desc") {
+      result.sort((a, b) => b.id - a.id);
+    }
+  
+    setFiltered(result);
+    setVisibleCount(20);
+  }, [selectedName, selectedType, selectedGeneration, sortOption, pokemons]);
   
 
   const handleSearch = (term) => {
@@ -95,7 +121,13 @@ useEffect(() => {
 <Search searchTerm={searchTerm} onSearch={handleSearch} /> 
 <div className="filters-container">
  
-  
+<select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+  <option value="">Ordenar por</option>
+  <option value="name-asc">Nombre A-Z</option>
+  <option value="name-desc">Nombre Z-A</option>
+  <option value="id-asc">ID ascendente</option>
+  <option value="id-desc">ID descendente</option>
+</select>
   <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
     <option value="">Tipo</option>
     {uniqueTypes.map(type => (

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "./PokemonGallery.css";
 import Search from "../Search/Search.jsx";
 
-const PokemonGallery = () => {
-  const [pokemons, setPokemons] = useState([]);
+const PokemonGallery = ({ pokemonData }) => {
+  const [pokemons, setPokemons] = useState(pokemonData || []);
   const [filtered, setFiltered] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCount, setVisibleCount] = useState(20);
@@ -39,14 +39,10 @@ useEffect(() => {
   setVisibleCount(20);
 }, [selectedName, selectedType, selectedGeneration,  pokemons]);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("fullPokemonData");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      setPokemons(parsed);
-      setFiltered(parsed);
-    }
-  }, []);
+useEffect(() => {
+  setPokemons(pokemonData);
+  setFiltered(pokemonData);
+}, [pokemonData]);
   useEffect(() => {
     const handleScroll = () => {
       const bottom =

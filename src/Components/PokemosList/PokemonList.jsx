@@ -1,11 +1,10 @@
-// src/components/PokemonList.jsx
 import React, { useEffect, useState } from "react";
 import PokemonGallery from "../Pokemones/PokemonGallery.jsx";
 
 const PokemonList = () => {
-  const [loading, setLoading] = useState(true);
   const [pokemonData, setPokemonData] = useState([]);
-  // 1. Trae la lista de todos los Pokémon (solo nombres y URLs)
+  const [loading, setLoading] = useState(true);
+
   const fetchAllPokemonList = async () => {
     try {
       const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0");
@@ -17,13 +16,13 @@ const PokemonList = () => {
     }
   };
 
-  // 2. Trae los detalles de cada Pokémon
   const fetchPokemonDetails = async (url) => {
     try {
       const res = await fetch(url);
       const data = await res.json();
       const speciesRes = await fetch(data.species.url);
-    const speciesData = await speciesRes.json();
+      const speciesData = await speciesRes.json();
+
       return {
         id: data.id,
         name: data.name,
@@ -40,66 +39,37 @@ const PokemonList = () => {
     }
   };
 
-  // 3. Carga los datos y los guarda en localStorage
   useEffect(() => {
-    const saveFullPokemonData = async () => {
-      try {
-        const alreadyStored = localStorage.getItem("fullPokemonData");
-        if (alreadyStored) {
-          console.log("✅ Pokémon ya están guardados en localStorage.");
-          setPokemonData(JSON.parse(alreadyStored)); // <- Cargar del localStorage
-          setLoading(false);
-          return;
-        }
-  
-        console.log("🚀 Cargando Pokémon desde la API...");
-        const list = await fetchAllPokemonList();
-  
-        const fullData = await fetchInBatches(list, 20); // Puedes ajustar 
-  
-        const cleanData = fullData.filter(Boolean);
-  
-        localStorage.setItem("fullPokemonData", JSON.stringify(cleanData));
-        setPokemonData(cleanData);  // <- Actualizar estado con los nuevos datos
-        console.log("✅ Pokémon guardados en localStorage.");
-      } catch (error) {
-        console.error("❌ Error general en la carga de Pokémon:", error);
-      } finally {
-        setLoading(false); // Solo se llama una vez, al final
+    const loadAndSavePokemon = async () => {
+      let storedData = JSON.parse(localStorage.getItem("fullPokemonData") || "[]");
+      setPokemonData(storedData); // Mostrar lo que ya hay en localStorage
+
+      const allList = await fetchAllPokemonList();
+      const remaining = allList.slice(storedData.length);
+
+      const batchSize = 20;
+      for (let i = 0; i < remaining.length; i += batchSize) {
+        const batch = remaining.slice(i, i + batchSize);
+        const batchData = await Promise.all(batch.map((p) => fetchPokemonDetails(p.url)));
+        const cleaned = batchData.filter(Boolean);
+
+        storedData = [...storedData, ...cleaned];
+        localStorage.setItem("fullPokemonData", JSON.stringify(storedData));
+        setPokemonData([...storedData]); // 🔁 actualiza para mostrar nuevos
+
+        await new Promise((r) => setTimeout(r, 200)); // Pausa para evitar saturación
       }
+
+      setLoading(false);
     };
-  
-    const fetchInBatches = async (urls, batchSize = 20) => {
-      const results = [];
-    
-      for (let i = 0; i < urls.length; i += batchSize) {
-        const batch = urls.slice(i, i + batchSize);
-        const batchResults = await Promise.all(
-          batch.map((pokemon) => fetchPokemonDetails(pokemon.url))
-        );
-        const cleanBatch = batchResults.filter(Boolean); // <- importante
-    
-        results.push(...cleanBatch);
-    
-        // ✅ Mostrar y guardar los Pokémon hasta este momento
-        setPokemonData([...results]); // muestra en tiempo real
-        localStorage.setItem("fullPokemonData", JSON.stringify(results));
-      }
-    
-      return results;
-    };
-  
-    saveFullPokemonData();
+
+    loadAndSavePokemon();
   }, []);
-  
 
   return (
     <div style={{ textAlign: "center", marginTop: "2rem" }}>
-      {loading ? (
-        <p>⏳ Cargando Pokémon...</p>
-      ) : (
-        <PokemonGallery pokemonData={pokemonData} />
-      )}
+      {loading && <p>⏳ Cargando Pokémon... {pokemonData.length}</p>}
+      <PokemonGallery pokemonData={pokemonData} />
     </div>
   );
 };

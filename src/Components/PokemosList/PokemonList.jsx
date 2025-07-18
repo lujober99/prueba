@@ -55,7 +55,7 @@ const PokemonList = () => {
         console.log("🚀 Cargando Pokémon desde la API...");
         const list = await fetchAllPokemonList();
   
-        const fullData = await fetchInBatches(list, 20); // Puedes ajustar el batchSize
+        const fullData = await fetchInBatches(list, 20); // Puedes ajustar 
   
         const cleanData = fullData.filter(Boolean);
   
@@ -71,15 +71,21 @@ const PokemonList = () => {
   
     const fetchInBatches = async (urls, batchSize = 20) => {
       const results = [];
-  
+    
       for (let i = 0; i < urls.length; i += batchSize) {
         const batch = urls.slice(i, i + batchSize);
         const batchResults = await Promise.all(
           batch.map((pokemon) => fetchPokemonDetails(pokemon.url))
         );
-        results.push(...batchResults);
+        const cleanBatch = batchResults.filter(Boolean); // <- importante
+    
+        results.push(...cleanBatch);
+    
+        // ✅ Mostrar y guardar los Pokémon hasta este momento
+        setPokemonData([...results]); // muestra en tiempo real
+        localStorage.setItem("fullPokemonData", JSON.stringify(results));
       }
-  
+    
       return results;
     };
   

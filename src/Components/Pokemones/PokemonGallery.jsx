@@ -84,6 +84,15 @@ useEffect(() => {
     setFiltered(result);
     setVisibleCount(20);
   }, [selectedName, selectedType, selectedGeneration, sortOption, pokemons]);
+
+
+  const handleClearFilters = () => {
+    setSelectedType("");
+    setSelectedGeneration("");
+    setSortOption("");
+    setFiltered(pokemons);
+    setVisibleCount(20);
+  }
   
 
   const handleSearch = (term) => {
@@ -141,6 +150,8 @@ useEffect(() => {
       <option key={generation} value={generation}>{generation}</option>
     ))} 
   </select>
+
+  <button onClick={handleClearFilters} className="clear-filters-button"> Limpiiar Filtros </button>
 
  
 </div>

@@ -3,7 +3,7 @@ import React from "react";
 import PokeDex from "../../assets/PokeDex.png";
 import "./Header.css";
 import User from "../User/User";
-import Pokebola from "../../assets/Pokebola.png"; // Asegúrate de que la ruta sea correcta
+import Pokebola from "../../assets/pokebola.png"; // Asegúrate de que la ruta sea correcta
 
 const Header: React.FC = () => {
   return (

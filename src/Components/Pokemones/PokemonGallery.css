@@ -1,49 +1,63 @@
+/* Contenedor de la galería de Pokémon */
 .pokemon-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .pokemon-card {
-    background-color: #fff7e6 !important;
-    position: relative;
-    border: 1px solid #e0d3b8;
-    padding: 12px;
-    width: 160px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
-  }
-  
-  .pokemon-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-  }
-  
-  .pokemon-card img {
-    width: 100px;
-    display: block;
-    margin: 0 auto;
-  }
-  
-  .pokemon-card h4 {
-    text-align: center;
-    margin: 8px 0 4px;
-  }
-  
-  .pokemon-card p {
-    font-size: 0.85rem;
-    margin: 2px 0;
-  }
-  .ID {
-    font-size: 1.2rem;
-    color: #ff4d2e; /* 🔥 Color vibrante para el ID */
-    position: absolute;
-    top: 8px;
-    left: 10px;
-    margin: 0;
-  }
-  .random-button,
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* Tarjeta de Pokémon */
+.pokemon-card {
+  background-color: #fff7e6 !important;
+  position: relative;
+  border: 1px solid #e0d3b8;
+  padding: 12px;
+  width: 160px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+  flex: 1 1 140px;
+  max-width: 180px;
+}
+
+/* Hover de la tarjeta */
+.pokemon-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen */
+.pokemon-card img {
+  width: 100px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Título */
+.pokemon-card h4 {
+  text-align: center;
+  margin: 8px 0 4px;
+}
+
+/* Descripciones */
+.pokemon-card p {
+  font-size: 0.85rem;
+  margin: 2px 0;
+}
+
+/* ID arriba a la izquierda */
+.ID {
+  font-size: 1.2rem;
+  color: #ff4d2e;
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  margin: 0;
+}
+
+/* Botones */
+.random-button,
 .reset-button {
   padding: 10px 18px;
   margin: 10px 10px 20px 0;
@@ -56,7 +70,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para botón de Mezclar */
 .random-button {
   background-color: #ff4848;
   color: white;
@@ -67,7 +80,6 @@
   transform: scale(1.05);
 }
 
-/* Estilo para botón de Reiniciar */
 .reset-button {
   background-color: #4caf50;
   color: white;
@@ -88,5 +100,53 @@
   cursor: pointer;
 }
 
-  
-  
+/* Sticky Header */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  padding: 16px 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Header cuando se hace scroll */
+.sticky-header.scrolled {
+  padding: 6px 16px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-size: 0.9rem;
+}
+
+/* Contenedor de filtros */
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.filters-container select,
+.filters-container button {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* 🔄 Media Queries para responsividad */
+@media (max-width: 768px) {
+  .pokemon-card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .pokemon-card {
+    width: 100%;
+  }
+}

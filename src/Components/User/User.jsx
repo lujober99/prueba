@@ -1,41 +1,19 @@
-import { useEffect, useState } from "react";
+// src/components/User.jsx
+import { useAuth } from "../AuthContext/AuthContext.jsx"; // Importa el hook useAuth
 import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 import "./user.css";
-import { LogOut } from 'lucide-react';
+
 const User = () => {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate(); 
-
-  const syncUser = () => {
-    const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-
-    if (!token || !storedUser) {
-      setUser(null);
-    } else {
-      setUser(JSON.parse(storedUser));
-    }
-  };
-
-  useEffect(() => {
-    syncUser();
-
-    // Suscribirse a cambios de localStorage (evento personalizado)
-    window.addEventListener("storage", syncUser);
-
-    return () => {
-      window.removeEventListener("storage", syncUser);
-    };
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/");
-  };
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   if (!user) return null;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="user-info-panel">

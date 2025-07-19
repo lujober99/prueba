@@ -1,16 +1,22 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/pages/Login.jsx
+import { useState, useEffect } from "react"; // ✅ agrega useEffect aquí
+import { useNavigate, Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useAuth } from "../AuthContext/AuthContext.jsx";
 import "./Login.css";
-import { Link } from "react-router-dom";
-import Swal from 'sweetalert2';
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-
-
+  // ✅ redirigir si ya está autenticado
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,22 +30,18 @@ const Login = ({ setIsAuthenticated }) => {
     const data = await res.json();
 
     if (res.ok) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data));
-      window.dispatchEvent(new Event("storage")); 
-      setIsAuthenticated(true);
+      login(data.accessToken, data);
       navigate("/home");
-    } else Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Usuario o contraseña incorrectos',
-        confirmButtonColor: '#d33',
-        background: '#fff8f5',
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Usuario o contraseña incorrectos",
+        confirmButtonColor: "#d33",
+        background: "#fff8f5",
       });
+    }
   };
-  
-
-
 
   return (
     <div className="login-container">
@@ -59,12 +61,10 @@ const Login = ({ setIsAuthenticated }) => {
           onChange={(e) => setPassword(e.target.value)}
           className="login-input"
         />
-        <button type="submit" className="login-button">
-          Ingresar
-        </button>
+        <button type="submit" className="login-button">Ingresar</button>
         <p className="login-link">
-  ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-</p>
+          ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+        </p>
       </form>
     </div>
   );

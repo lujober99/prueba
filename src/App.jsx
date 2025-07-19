@@ -8,14 +8,10 @@ import PokemonDescription from './Components/Description/Description.jsx';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute.jsx';
 import Register from './Components/Register/Register.jsx';
 import PokemonList from './Components/PokemosList/PokemonList.jsx';
+import { useAuth } from './Components/AuthContext/AuthContext.jsx';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
+  const { isAuthenticated, login } = useAuth();
 
   if (isAuthenticated === null) {
     return null; // evita render hasta saber si hay auth
@@ -25,10 +21,7 @@ function App() {
     <Router>
       {isAuthenticated && <Header />}
       <Routes>
-        <Route
-          path="/"
-          element={<Login setIsAuthenticated={setIsAuthenticated} />}
-        />
+      <Route path="/" element={<Login />} />
         <Route
           path="/register"
           element={<Register />}

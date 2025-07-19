@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PokemonGallery from "../Pokemones/PokemonGallery.jsx";
 
 const PokemonList = () => {
   const [pokemonData, setPokemonData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchAllPokemonList = async () => {
+  const fetchAllPokemonList = useCallback(async () => {
     try {
       const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0");
       const data = await res.json();
@@ -14,9 +14,9 @@ const PokemonList = () => {
       console.error("❌ Error al obtener la lista de Pokémon:", error);
       return [];
     }
-  };
+  }, []);
 
-  const fetchPokemonDetails = async (url) => {
+  const fetchPokemonDetails = useCallback(async (url) => {
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -26,23 +26,30 @@ const PokemonList = () => {
       return {
         id: data.id,
         name: data.name,
-        image: data.sprites.front_default,
+        image: data.sprites.other["official-artwork"].front_default || data.sprites.front_default || "",
         types: data.types.map((t) => t.type.name),
         abilities: data.abilities.map((a) => a.ability.name),
         height: data.height,
         weight: data.weight,
+        evolutionUrl: speciesData.evolution_chain.url,
         generation: speciesData.generation.name,
       };
     } catch (error) {
       console.error("❌ Error al obtener detalles de Pokémon:", error);
       return null;
     }
-  };
+  }, []);
 
   useEffect(() => {
     const loadAndSavePokemon = async () => {
       let storedData = JSON.parse(localStorage.getItem("fullPokemonData") || "[]");
+      const isFullyLoaded = localStorage.getItem("isFullyLoaded");
       setPokemonData(storedData); // Mostrar lo que ya hay en localStorage
+
+      if (isFullyLoaded === "true") {
+        setLoading(false);
+        return;
+      }
 
       const allList = await fetchAllPokemonList();
       const remaining = allList.slice(storedData.length);
@@ -55,16 +62,16 @@ const PokemonList = () => {
 
         storedData = [...storedData, ...cleaned];
         localStorage.setItem("fullPokemonData", JSON.stringify(storedData));
-        setPokemonData([...storedData]); // 🔁 actualiza para mostrar nuevos
+        setPokemonData([...storedData]);
 
-        await new Promise((r) => setTimeout(r, 200)); // Pausa para evitar saturación
+        await new Promise((r) => setTimeout(r, 200)); // para evitar saturación
       }
 
       setLoading(false);
     };
 
     loadAndSavePokemon();
-  }, []);
+  }, [fetchAllPokemonList, fetchPokemonDetails]);
 
   return (
     <div style={{ textAlign: "center", marginTop: "2rem" }}>

@@ -1,8 +1,12 @@
-// src/Search/Search.jsx
 import React from "react";
 import "./Search.css";
 
-const Search = ({ searchTerm, onSearch }) => {
+interface SearchProps {
+  searchTerm: string;
+  onSearch: (value: string) => void;
+}
+
+const Search: React.FC<SearchProps> = ({ searchTerm, onSearch }) => {
   return (
     <div className="search-container">
       <input
@@ -12,8 +16,6 @@ const Search = ({ searchTerm, onSearch }) => {
         onChange={(e) => onSearch(e.target.value)}
         className="search-input"
       />
-
-      
     </div>
   );
 };

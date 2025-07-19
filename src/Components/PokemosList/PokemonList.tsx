@@ -1,11 +1,28 @@
 import React, { useEffect, useState, useCallback } from "react";
-import PokemonGallery from "../Pokemones/PokemonGallery.jsx";
+import PokemonGallery from "../Pokemones/PokemonGallery";
 
-const PokemonList = () => {
-  const [pokemonData, setPokemonData] = useState([]);
-  const [loading, setLoading] = useState(true);
+interface PokemonListItem {
+  name: string;
+  url: string;
+}
 
-  const fetchAllPokemonList = useCallback(async () => {
+interface PokemonDetails {
+  id: number;
+  name: string;
+  image: string;
+  types: string[];
+  abilities: string[];
+  height: number;
+  weight: number;
+  evolutionUrl: string;
+  generation: string;
+}
+
+const PokemonList: React.FC = () => {
+  const [pokemonData, setPokemonData] = useState<PokemonDetails[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchAllPokemonList = useCallback(async (): Promise<PokemonListItem[]> => {
     try {
       const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10000&offset=0");
       const data = await res.json();
@@ -16,7 +33,7 @@ const PokemonList = () => {
     }
   }, []);
 
-  const fetchPokemonDetails = useCallback(async (url) => {
+  const fetchPokemonDetails = useCallback(async (url: string): Promise<PokemonDetails | null> => {
     try {
       const res = await fetch(url);
       const data = await res.json();
@@ -27,8 +44,8 @@ const PokemonList = () => {
         id: data.id,
         name: data.name,
         image: data.sprites.other["official-artwork"].front_default || data.sprites.front_default || "",
-        types: data.types.map((t) => t.type.name),
-        abilities: data.abilities.map((a) => a.ability.name),
+        types: data.types.map((t: { type: { name: string } }) => t.type.name),
+        abilities: data.abilities.map((a: { ability: { name: string } }) => a.ability.name),
         height: data.height,
         weight: data.weight,
         evolutionUrl: speciesData.evolution_chain.url,
@@ -42,9 +59,9 @@ const PokemonList = () => {
 
   useEffect(() => {
     const loadAndSavePokemon = async () => {
-      let storedData = JSON.parse(localStorage.getItem("fullPokemonData") || "[]");
+      let storedData: PokemonDetails[] = JSON.parse(localStorage.getItem("fullPokemonData") || "[]");
       const isFullyLoaded = localStorage.getItem("isFullyLoaded");
-      setPokemonData(storedData); // Mostrar lo que ya hay en localStorage
+      setPokemonData(storedData);
 
       if (isFullyLoaded === "true") {
         setLoading(false);
@@ -58,16 +75,17 @@ const PokemonList = () => {
       for (let i = 0; i < remaining.length; i += batchSize) {
         const batch = remaining.slice(i, i + batchSize);
         const batchData = await Promise.all(batch.map((p) => fetchPokemonDetails(p.url)));
-        const cleaned = batchData.filter(Boolean);
+        const cleaned = batchData.filter(Boolean) as PokemonDetails[];
 
         storedData = [...storedData, ...cleaned];
         localStorage.setItem("fullPokemonData", JSON.stringify(storedData));
         setPokemonData([...storedData]);
 
-        await new Promise((r) => setTimeout(r, 200)); // para evitar saturación
+        await new Promise((r) => setTimeout(r, 200));
       }
 
       setLoading(false);
+      localStorage.setItem("isFullyLoaded", "true");
     };
 
     loadAndSavePokemon();

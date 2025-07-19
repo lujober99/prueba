@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 import Swal from "sweetalert2";
+
+interface FormData {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+}
+
 const Register = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: "",
     password: "",
     email: "",
@@ -13,14 +23,14 @@ const Register = () => {
     gender: "male",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const res = await fetch("https://dummyjson.com/users/add", {
@@ -32,14 +42,9 @@ const Register = () => {
     const data = await res.json();
 
     if (res.ok) {
-      // Simula token ya que dummyjson no devuelve uno al registrar
       const fakeToken = "dummy_token_" + Date.now();
-
-      // Guarda el usuario y el token
       localStorage.setItem("token", fakeToken);
       localStorage.setItem("user", JSON.stringify(data));
-      
-
 
       Swal.fire({
         icon: "success",

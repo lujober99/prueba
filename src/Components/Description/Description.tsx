@@ -1,25 +1,44 @@
-import React, { Component, use, useEffect, useState } from 'react'
-import { data, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
-import './Description.css';
+import "./Description.css";
 
 Modal.setAppElement("#root");
 
-const Description = () => {
-  const [isOpen, setIsOpen] = useState(false);
+type PokemonData = {
+  id: number;
+  name: string;
+  image: string;
+  types: string[];
+  abilities: string[];
+  height: number;
+  weight: number;
+  evolutionUrl?: string;
+};
 
-  const { id } = useParams();
-  const [pokemon, setPokemon] = useState(null);
+type Evolution = {
+  name: string;
+  image: string;
+};
+
+type CharacteristicResponse = {
+  descriptions: { language: { name: string }; description: string }[];
+};
+
+const Description: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const [pokemon, setPokemon] = useState<PokemonData | null>(null);
   const [description, setDescription] = useState("");
-  const [evolutionChain, setEvolutionChain] = useState([]);
+  const [evolutionChain, setEvolutionChain] = useState<Evolution[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const stored = localStorage.getItem("fullPokemonData");
     if (stored) {
-      const allPokemon = JSON.parse(stored);
-      const found = allPokemon.find(p => p.id === parseInt(id));
-      setPokemon(found);
+      const allPokemon: PokemonData[] = JSON.parse(stored);
+      const found = allPokemon.find(p => p.id === parseInt(id || ""));
+      setPokemon(found || null);
     }
   }, [id]);
 
@@ -27,7 +46,7 @@ const Description = () => {
     const fetchDescription = async () => {
       try {
         const res = await fetch(`https://pokeapi.co/api/v2/characteristic/${id}`);
-        const data = await res.json();
+        const data: CharacteristicResponse = await res.json();
         const spanish = data.descriptions.find(desc => desc.language.name === "en");
         setDescription(spanish ? spanish.description : "Descripción no disponible.");
       } catch (error) {
@@ -37,20 +56,17 @@ const Description = () => {
     };
     fetchDescription();
   }, [id]);
-  
+
   useEffect(() => {
     const getEvolutionChain = async () => {
       try {
-        // 1. Obtener species para conseguir el link de evolución
         const evoUrl = pokemon?.evolutionUrl;
         if (!evoUrl) return;
 
-        // 2. Obtener datos de la evolución
         const evoRes = await fetch(evoUrl);
         const evoData = await evoRes.json();
 
-        // 3. Recorrer la cadena de evolución
-        const chain = [];
+        const chain: Evolution[] = [];
         let current = evoData.chain;
 
         while (current) {
@@ -75,8 +91,6 @@ const Description = () => {
     getEvolutionChain();
   }, [pokemon]);
 
-
-
   if (!pokemon) return <p>Cargando descripción del Pokémon...</p>;
 
   return (
@@ -85,7 +99,7 @@ const Description = () => {
         Volver a la galería
       </button>
 
-      <div className="pokemon-card">
+      <div className="pokemon-card" style={{ maxWidth: "600px", margin: "6px auto", padding: "100px" }}>
         <div className="pokemon-description">
           <h2>{pokemon.id} - {pokemon.name}</h2>
 
@@ -124,8 +138,6 @@ const Description = () => {
       </div>
     </>
   );
-
-
 };
 
-export default Description
+export default Description;

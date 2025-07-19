@@ -1,24 +1,22 @@
-// src/pages/Login.jsx
-import { useState, useEffect } from "react"; // ✅ agrega useEffect aquí
+import { useState, useEffect, FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useAuth } from "../AuthContext/AuthContext.jsx";
+import { useAuth } from "../AuthContext/AuthContext";
 import "./Login.css";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // ✅ redirigir si ya está autenticado
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/home");
     }
   }, [isAuthenticated, navigate]);
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     const res = await fetch("https://dummyjson.com/auth/login", {
@@ -30,7 +28,7 @@ const Login = () => {
     const data = await res.json();
 
     if (res.ok) {
-      login(data.accessToken, data);
+      login(data.accessToken || data.token, data); // asegúrate de usar el campo correcto
       navigate("/home");
     } else {
       Swal.fire({

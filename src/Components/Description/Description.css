@@ -1,13 +1,14 @@
 .pokemon-card {
-    max-width: 800px !important;
-    margin: 20px auto;
-    padding: 99px;
-    border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    background-color: #ffffff;
-    text-align: center;
-    font-family: 'Segoe UI', sans-serif;
-  }
+  max-width: 800px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 100px; /* <-- corregido */
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
   
   .pokemon-description h2 {
     margin-bottom: 20px;

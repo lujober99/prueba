@@ -1,7 +1,12 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from "../AuthContext/AuthContext.jsx"; // Importa el hook useAuth
+import { useAuth } from "../AuthContext/AuthContext"; // Importa el hook useAuth
+import { ReactNode } from 'react';
 
-const PrivateRoute = ({ children }) => {
+interface PrivateRouteProps {
+  children: ReactNode;
+}
+
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated === null) return null; // aún no sabe si está logueado

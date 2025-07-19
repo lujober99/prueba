@@ -1,5 +1,4 @@
-// src/components/User.jsx
-import { useAuth } from "../AuthContext/AuthContext.jsx"; // Importa el hook useAuth
+import { useAuth } from "../AuthContext/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import "./user.css";

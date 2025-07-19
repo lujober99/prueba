@@ -181,11 +181,18 @@
 }
 
 @media (max-width: 480px) {
-  .pokemon-card {
-    width: 100%;
+  .sidebar {
+    width: 75%; /* ✅ más estrecho */
+    max-width: 280px; /* límite razonable */
   }
 
-  .sidebar {
-    width: 100%;
+  .sidebar-toggle {
+    top: 10px;
+    left: 10px;
+  }
+
+  .pokemon-gallery {
+    padding: 16px;
   }
 }
+

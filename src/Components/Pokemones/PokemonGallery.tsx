@@ -1,5 +1,5 @@
 // src/components/PokemonGallery.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PokemonGallery.css";
 import Search from "../Search/Search";
@@ -28,6 +28,9 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
   const [sortOption, setSortOption] = useState<string>("");
   const [restoredFilters, setRestoredFilters] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const navigate = useNavigate();
 
@@ -143,71 +146,93 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
     setVisibleCount(20);
     setSearchTerm("");
   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+  
+      if (
+        menuOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
+  
 
   return (
     <div>
-      <div className={`sticky-header ${scrolled ? "scrolled" : ""}`}>
-        <button onClick={handleShuffle} className="random-button">
-          Mezclar Pokémon Aleatoriamente
-        </button>
+      <div>
+      {/* Botón para abrir/cerrar menú */}
+      <button ref={buttonRef} className="sidebar-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+        ☰
+      </button>
 
-        <button onClick={handleResetOrder} className="reset-button">
-          Reiniciar Orden
-        </button>
-
-        <Search searchTerm={searchTerm} onSearch={handleSearch} />
-
-        <div className="filters-container">
-          <select
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-          >
-            <option value="">Ordenar por</option>
-            <option value="name-asc">Nombre A-Z</option>
-            <option value="name-desc">Nombre Z-A</option>
-            <option value="id-asc">ID ascendente</option>
-            <option value="id-desc">ID descendente</option>
-          </select>
-
-          <select
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-          >
-            <option value="">Tipo</option>
-            {uniqueTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedGeneration}
-            onChange={(e) => setSelectedGeneration(e.target.value)}
-          >
-            <option value="">Generación</option>
-            {uniqueGenerations.map((generation) => (
-              <option key={generation} value={generation}>
-                {generation}
-              </option>
-            ))}
-          </select>
-
-          <button onClick={handleClearFilters} className="clear-filters-button">
-            Limpiar Filtros
+      {/* Sidebar desplegable */}
+      <div ref={sidebarRef} className={`sidebar ${menuOpen ? "open" : ""}`}>
+        <div className={`sticky-header ${scrolled ? "scrolled" : ""}`}>
+          <button onClick={handleShuffle} className="random-button">
+            Mezclar Pokémon Aleatoriamente
           </button>
+
+          <button onClick={handleResetOrder} className="reset-button">
+            Reiniciar Orden
+          </button>
+
+          <Search searchTerm={searchTerm} onSearch={handleSearch} />
+
+          <div className="filters-container">
+            <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+              <option value="">Ordenar por</option>
+              <option value="name-asc">Nombre A-Z</option>
+              <option value="name-desc">Nombre Z-A</option>
+              <option value="id-asc">ID ascendente</option>
+              <option value="id-desc">ID descendente</option>
+            </select>
+
+            <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+              <option value="">Tipo</option>
+              {uniqueTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedGeneration}
+              onChange={(e) => setSelectedGeneration(e.target.value)}
+            >
+              <option value="">Generación</option>
+              {uniqueGenerations.map((generation) => (
+                <option key={generation} value={generation}>
+                  {generation}
+                </option>
+              ))}
+            </select>
+
+            <button onClick={handleClearFilters} className="clear-filters-button">
+              Limpiar Filtros
+            </button>
+          </div>
         </div>
       </div>
 
-      <h2>Total de Pokémones: {filtered.length}</h2>
+      <h2 style={{ marginLeft: "80px" }}>
+        Total de Pokémones: {filtered.length}
+      </h2>
 
-      <div className="pokemon-gallery">
+      <div className="pokemon-gallery" style={{ marginLeft: "80px" }}>
         {filtered.slice(0, visibleCount).map((p) => (
-          <div
-            key={p.id}
-            className="pokemon-card"
-            onClick={() => navigate(`/pokemon/${p.id}`)}
-          >
+          <div key={p.id} className="pokemon-card" onClick={() => navigate(`/pokemon/${p.id}`)}>
             <h3 className="ID">{p.id}</h3>
             <img src={p.image} alt={p.name} />
             <h4>{p.name}</h4>
@@ -218,11 +243,16 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
               <strong>Generación:</strong> {p.generation}
             </p>
             <p>
-            <strong>Habilidades:</strong> {p.abilities.join(", ")}
+              <strong>Habilidades:</strong> {p.abilities.join(", ")}
             </p>
           </div>
         ))}
       </div>
+
+      <h2>Total de Pokémones: {filtered.length}</h2>
+
+      
+    </div>
     </div>
   );
 };

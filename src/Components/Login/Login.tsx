@@ -29,6 +29,8 @@ const Login = () => {
 
     if (res.ok) {
       login(data.accessToken || data.token, data); // asegúrate de usar el campo correcto
+      localStorage.removeItem("fullPokemonData");
+      localStorage.removeItem("isFullyLoaded");
       navigate("/home");
     } else {
       Swal.fire({

@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from './Components/Login/Login';
 import Header from './Components/Header/Header';
-import PokemonGallery from './Components/Pokemones/PokemonGallery';
 import PokemonDescription from './Components/Description/Description';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import Register from './Components/Register/Register';

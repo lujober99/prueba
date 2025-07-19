@@ -226,11 +226,11 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
         </div>
       </div>
 
-      <h2 style={{ marginLeft: "80px" }}>
+      <h2 style={{ textAlign: "center", marginTop: "20px" }}>
         Total de Pokémones: {filtered.length}
       </h2>
 
-      <div className="pokemon-gallery" style={{ marginLeft: "80px" }}>
+      <div className="pokemon-gallery" >
         {filtered.slice(0, visibleCount).map((p) => (
           <div key={p.id} className="pokemon-card" onClick={() => navigate(`/pokemon/${p.id}`)}>
             <h3 className="ID">{p.id}</h3>
@@ -248,10 +248,6 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
           </div>
         ))}
       </div>
-
-      <h2>Total de Pokémones: {filtered.length}</h2>
-
-      
     </div>
     </div>
   );

@@ -176,7 +176,7 @@
 /* 📱 Responsividad */
 @media (max-width: 768px) {
   .pokemon-card {
-    width: 45%;
+    width: 100%;
   }
 }
 

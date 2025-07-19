@@ -31,6 +31,8 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [checkingScroll, setCheckingScroll] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -87,6 +89,27 @@ const PokemonGallery: React.FC<Props> = ({ pokemonData }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const checkIfNoScroll = () => {
+      const noScroll = document.body.scrollHeight <= window.innerHeight + 20;
+  
+      if (noScroll && !checkingScroll && visibleCount < pokemonData.length) {
+        setCheckingScroll(true); // 🚫 evita que dispare varias veces seguidas
+        setVisibleCount((prev) => prev + 20);
+      }
+    };
+  
+    // Esperar un pequeño delay para asegurar render del DOM
+    const timeout = setTimeout(checkIfNoScroll, 100); // puedes ajustar a 200ms si hace falta
+  
+    return () => clearTimeout(timeout);
+  }, [pokemonData, visibleCount, checkingScroll]);
+
+  useEffect(() => {
+    setCheckingScroll(false); // 🔁 permite que vuelva a chequear en el próximo render
+  }, [visibleCount]);
+  
 
   useEffect(() => {
     if (!restoredFilters) return;
